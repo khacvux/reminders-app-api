@@ -6,11 +6,9 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { JwtGuard } from '../auth/guard';
 import { CategoryService } from './category.service';
 import { GetUser } from '../auth/decorator';
@@ -23,7 +21,10 @@ export class CategoryController {
 
   @HttpCode(HttpStatus.OK)
   @Post('add')
-  createCategory(@GetUser('email') email: string, @Body() dto: CategoryDto) {
+  createCategory(
+    @GetUser('email') email: string,
+    @Body() dto: CategoryDto,
+  ) {
     return this.categoryService.createCategory(email, dto);
   }
 
@@ -37,12 +38,9 @@ export class CategoryController {
     return this.categoryService.list(email);
   }
 
-  @HttpCode((HttpStatus.NO_CONTENT))
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  deleteCategory(
-    @GetUser('email') email: string,
-    @Param('id') idCategory: string,
-  ){
-    return this.categoryService.deleteCategory(idCategory)
+  deleteCategory(@Param('id') idCategory: string) {
+    return this.categoryService.deleteCategory(idCategory);
   }
 }
