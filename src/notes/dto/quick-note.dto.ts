@@ -1,10 +1,6 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class UpdateNoteDto {
-    @IsString()
-    @IsNotEmpty()
-    idNote: string
-  
+export class QuickNoteDto {
     @IsString()
     note: string;
   
@@ -17,4 +13,5 @@ export class UpdateNoteDto {
 
     @IsNumber()
     status: number
+
 }

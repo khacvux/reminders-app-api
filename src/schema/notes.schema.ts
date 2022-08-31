@@ -9,7 +9,7 @@ export type NotesDocument = Notes & Document;
 
 @Schema()
 export class Notes {
-  @Prop({ required: true })
+  @Prop({ required: false })
   idCategory: string;
 
   @Prop({ required: true })
@@ -31,6 +31,9 @@ export class Notes {
   // 2 --
   // 3 --
   necessity: number;
+
+  @Prop({ required: true})
+  status: number
 }
 
 export const NotesSchema =

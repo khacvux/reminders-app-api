@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { uuid } from 'uuidv4';
 import { CreateNoteDto, UpdateNecessityNoteDto, UpdateNoteDto } from './dto';
+import { QuickNoteDto } from './dto/quick-note.dto';
 import { NotesRepository } from './notes.repository';
 
 @Injectable()
@@ -32,6 +33,7 @@ export class NotesService {
         note: dto.note,
         date: dto.date,
         necessity: dto.necessity,
+        status: dto.status
       });
     } catch (error) {
       throw error;
@@ -46,6 +48,7 @@ export class NotesService {
           note: dto.note,
           date: dto.date,
           necessity: dto.necessity,
+          status: dto.status
         },
       );
     } catch (error) {
@@ -75,4 +78,29 @@ export class NotesService {
       throw error;
     }
   }
+
+  async quickNote(email: string, dto: QuickNoteDto) {
+    try {
+      return this.notesRepository.create({
+        email: email,
+        idNote: uuid(),
+        note: dto.note,
+        date: dto.date,
+        necessity: dto.necessity,
+        status: dto.status,
+        idCategory: "0",
+      });
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async listQuickNote(email: string) {
+    try {
+      return
+    } catch (error) {
+      throw error
+    }
+  }
+
 }

@@ -1,4 +1,7 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { AuthDto, SignUpDto } from './dto';
 import * as argon from 'argon2';
 import { JwtService } from '@nestjs/jwt';
@@ -13,13 +16,29 @@ export class AuthService {
     private userRepository: UserRepository,
   ) {}
   async signin(dto: AuthDto) {
-    const user = await this.userRepository.findOne({ email: dto.email });
-    if (!user) throw new ForbiddenException("Credientials incorrect");
+    const user = await this.userRepository.findOne({
+      email: dto.email,
+    });
+    if (!user)
+      throw new ForbiddenException(
+        'Credientials incorrect',
+      );
 
-    const pwMatches = argon.verify(user.password, dto.password);
-    if (!pwMatches) throw new ForbiddenException('Credientials incorrect');
+    const pwMatches = argon.verify(
+      user.password,
+      dto.password,
+    );
+    if (!pwMatches)
+      throw new ForbiddenException(
+        'Credientials incorrect',
+      );
 
-    return this.signToken(dto.email);
+    const token = await this.signToken(user.email);
+    return {
+      email: user.email,
+      username: user.username,
+      token,
+    };
   }
 
   async signup(dto: SignUpDto) {
@@ -29,14 +48,19 @@ export class AuthService {
         username: dto.username,
         email: dto.email,
         password: hash,
-      })
-      return this.signToken(user.email);
+      });
+      const token = await this.signToken(user.email);
+      return {
+        email: user.email,
+        username: user.username,
+        token: token,
+      };
     } catch (error) {
       throw error;
     }
   }
 
-  async signToken(email: string): Promise<{ access_token: string }> {
+  async signToken(email: string): Promise<string> {
     const payload = {
       email,
     };
@@ -45,8 +69,6 @@ export class AuthService {
       expiresIn: '365d',
       secret,
     });
-    return {
-      access_token: token,
-    };
+    return token;
   }
 }

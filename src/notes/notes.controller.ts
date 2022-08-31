@@ -18,9 +18,12 @@ import {
   UpdateNecessityNoteDto,
   UpdateNoteDto,
 } from './dto';
+import { ApiTags } from '@nestjs/swagger';
+import { QuickNoteDto } from './dto/quick-note.dto';
 
 @UseGuards(JwtGuard)
 @Controller('notes')
+@ApiTags('Notes')
 export class NotesController {
   constructor(private notesService: NotesService) {}
 
@@ -57,4 +60,19 @@ export class NotesController {
   deleteNote(@Param('id') idNote: string) {
     return this.notesService.deleteNote(idNote);
   }
+
+  @Post('quick/add')
+  quickNote(
+    @Body() dto: QuickNoteDto,
+    @GetUser('email') email: string,
+  ) {
+    return this.notesService.quickNote(email, dto);
+  }
+
+  @Get('quick/list')
+  listQuickNote(@GetUser('email') email: string) {
+    return this.listQuickNote(email);
+  }
+
+  
 }
