@@ -1,3 +1,5 @@
 export * from './create-note.dto'
 export * from './update-note.dto'
 export * from './update-necessity-note.dto'
+export * from './update-category.dto'
+export * from './quick-note.dto'

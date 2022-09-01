@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { uuid } from 'uuidv4';
-import { CreateNoteDto, UpdateNecessityNoteDto, UpdateNoteDto } from './dto';
-import { QuickNoteDto } from './dto/quick-note.dto';
+import {
+  CreateNoteDto,
+  UpdateCategoryDto,
+  UpdateNecessityNoteDto,
+  UpdateNoteDto,
+} from './dto';
+import { QuickNoteDto } from './dto';
 import { NotesRepository } from './notes.repository';
 
 @Injectable()
@@ -33,7 +38,7 @@ export class NotesService {
         note: dto.note,
         date: dto.date,
         necessity: dto.necessity,
-        status: dto.status
+        status: dto.status,
       });
     } catch (error) {
       throw error;
@@ -48,7 +53,7 @@ export class NotesService {
           note: dto.note,
           date: dto.date,
           necessity: dto.necessity,
-          status: dto.status
+          status: dto.status,
         },
       );
     } catch (error) {
@@ -88,19 +93,34 @@ export class NotesService {
         date: dto.date,
         necessity: dto.necessity,
         status: dto.status,
-        idCategory: "0",
+        idCategory: '0',
       });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   async listQuickNote(email: string) {
     try {
-      return
+      return this.notesRepository.find({
+        email,
+        idCategory: 0,
+      });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
+  async updateCategory(dto: UpdateCategoryDto) {
+    try {
+      return this.notesRepository.findOneAndUpdate(
+        { idNote: dto.idNote },
+        {
+          idCategory: dto.idCategory,
+        },
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 }
