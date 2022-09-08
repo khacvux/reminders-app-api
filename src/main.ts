@@ -8,6 +8,7 @@ import {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -16,7 +17,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Smart Reminders API')
-    .setDescription('The cats API description')
+    .setDescription('')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(
