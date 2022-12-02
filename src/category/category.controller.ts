@@ -40,7 +40,7 @@ export class CategoryController {
     @GetUser('email') email: string,
     @Body() dto: CategoryDto,
   ) {
-    return this.categoryService.createCategory(email, dto);
+    return this.categoryService.createCategory(email, dto)
   }
 
   @Post('update')
