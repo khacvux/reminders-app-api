@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsString,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateNoteDto {
   @IsString()
@@ -13,6 +14,7 @@ export class CreateNoteDto {
   @IsString()
   note: string;
 
+  @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
   date: Date;

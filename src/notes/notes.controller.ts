@@ -53,15 +53,16 @@ export class NotesController {
     return this.notesService.createNote(email, dto);
   }
 
-  @Get('list/:id')
+  @Get('list-all')
+  listAll(@GetUser('email') email: string) {
+    return this.notesService.listAll(email);
+  }
+
+  @Get(':id/list')
   listByIdCategory(@Param('id') idCategory: string) {
     return this.notesService.listById(idCategory);
   }
 
-  @Get('list/all')
-  listAll(@GetUser('email') email: string) {
-    return this.notesService.listAll(email);
-  }
 
   @Post('update')
   @ApiBody({
